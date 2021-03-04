@@ -4,6 +4,7 @@ namespace Orkhanahmadov\LaravelIpMiddleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class BlacklistMiddleware extends Middleware
 {
@@ -18,7 +19,7 @@ class BlacklistMiddleware extends Middleware
      */
     public function handle($request, Closure $next, ...$blacklist)
     {
-        if ($this->shouldCheck() && in_array($this->clientIp($request), $this->ipList($blacklist))) {
+        if ($this->shouldCheck() && IpUtils::checkIp($this->clientIp($request), $this->ipList($blacklist)) ) {
             $this->abort();
         }
 
